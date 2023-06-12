@@ -1,0 +1,4 @@
+ARM6569 To do
+--------------
+
+	Fix sprites to how they were.
