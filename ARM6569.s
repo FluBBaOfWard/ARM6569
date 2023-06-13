@@ -154,41 +154,41 @@ VIC_R:
 	.long VIC_palette_R		;@ 0xD02E
 
 VIC_default_R:
-	add r2,r10,#m6569Registers
+	add r2,vic2ptr,#m6569Registers
 	ldrb r0,[r2,r1]
 	bx lr
 
 ;@----------------------------------------------------------------------------
 VIC_ctrl1_R:		;@ 0xD011
 ;@----------------------------------------------------------------------------
-	ldr r1,[r10,#scanline]
+	ldr r1,[vic2ptr,#scanline]
 	and r1,r1,#0x100
-	ldrb r0,[r10,#vicCtrl1]
+	ldrb r0,[vic2ptr,#vicCtrl1]
 	and r0,r0,#0x7F
 	orr r0,r0,r1,lsr#1
 	bx lr
 ;@----------------------------------------------------------------------------
 VIC_scanline_R:		;@ 0xD012
 ;@----------------------------------------------------------------------------
-	ldrb r0,[r10,#scanline]
+	ldrb r0,[vic2ptr,#scanline]
 	bx lr
 ;@----------------------------------------------------------------------------
 VIC_ctrl2_R:		;@ 0xD016
 ;@----------------------------------------------------------------------------
-	ldrb r0,[r10,#vicCtrl2]
+	ldrb r0,[vic2ptr,#vicCtrl2]
 	orr r0,r0,#0xC0
 	bx lr
 ;@----------------------------------------------------------------------------
 VIC_memctrl_R:		;@ 0xD018
 ;@----------------------------------------------------------------------------
-	ldrb r0,[r10,#vicMemCtrl]
+	ldrb r0,[vic2ptr,#vicMemCtrl]
 	orr r0,r0,#0x01
 	bx lr
 ;@----------------------------------------------------------------------------
 VIC_irqflag_R:		;@ 0xD019
 ;@----------------------------------------------------------------------------
 //	mov r11,r11
-	ldrb r0,[r10,#vicIrqFlag]
+	ldrb r0,[vic2ptr,#vicIrqFlag]
 	ands r0,r0,#0x0F
 	orrne r0,r0,#0x80
 	orr r0,r0,#0x70
@@ -196,13 +196,13 @@ VIC_irqflag_R:		;@ 0xD019
 ;@----------------------------------------------------------------------------
 VIC_irqenable_R:	;@ 0xD01A
 ;@----------------------------------------------------------------------------
-	ldrb r0,[r10,#vicIrqEnable]
+	ldrb r0,[vic2ptr,#vicIrqEnable]
 	orr r0,r0,#0xF0
 	bx lr
 ;@----------------------------------------------------------------------------
 VIC_palette_R:		;@ 0xD020 -> 0xD02E
 ;@----------------------------------------------------------------------------
-	add r2,r10,#m6569Registers
+	add r2,vic2ptr,#m6569Registers
 	ldrb r0,[r2,r1]
 	orr r0,r0,#0xF0
 	bx lr
@@ -276,32 +276,32 @@ VIC_W:
 
 VIC_default_W:
 //	mov r11,r11
-	add r2,r10,#m6569Registers
+	add r2,vic2ptr,#m6569Registers
 	strb r0,[r2,r1]
 	bx lr
 
 ;@----------------------------------------------------------------------------
 VIC_ctrl1_W:		;@ 0xD011
 ;@----------------------------------------------------------------------------
-	strb r0,[r10,#vicCtrl1]
+	strb r0,[vic2ptr,#vicCtrl1]
 	b SetC64GfxMode
 ;@----------------------------------------------------------------------------
 VIC_ctrl2_W:		;@ 0xD016
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r0,r12}
-	ldrb r1,[r10,#vicCtrl2]
-	strb r0,[r10,#vicCtrl2]
+	ldrb r1,[vic2ptr,#vicCtrl2]
+	strb r0,[vic2ptr,#vicCtrl2]
 	and r1,r1,#7
 
-	ldr addy,[r10,#scanline]	;@ addy=scanline
+	ldr addy,[vic2ptr,#scanline]	;@ addy=scanline
 	subs addy,addy,#50
 	bmi exit_sx
 	cmp addy,#200
 	movhi addy,#200
-	ldr r0,[r10,#scrollXLine]
+	ldr r0,[vic2ptr,#scrollXLine]
 	cmp r0,addy
 	bhi exit_sx
-	str addy,[r10,#scrollXLine]
+	str addy,[vic2ptr,#scrollXLine]
 
 	ldr r2,=scroll_ptr0
 	ldr r2,[r2]
@@ -319,15 +319,15 @@ exit_sx:
 ;@----------------------------------------------------------------------------
 VIC_memctrl_W:		;@ 0xD018
 ;@----------------------------------------------------------------------------
-	strb r0,[r10,#vicMemCtrl]
+	strb r0,[vic2ptr,#vicMemCtrl]
 	b SetC64GfxBases
 ;@----------------------------------------------------------------------------
 VIC_irqflag_W:		;@ 0xD019
 ;@----------------------------------------------------------------------------
 //	mov r11,r11
-	ldrb r1,[r10,#vicIrqFlag]
+	ldrb r1,[vic2ptr,#vicIrqFlag]
 	bic r1,r1,r0
-	strb r1,[r10,#vicIrqFlag]
+	strb r1,[vic2ptr,#vicIrqFlag]
 	bx lr
 
 

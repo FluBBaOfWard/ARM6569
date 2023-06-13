@@ -9,6 +9,7 @@
 
 #include "../ARM6502/M6502.i"
 				;@ r0,r1,r2=temp regs
+	vic2ptr		.req r10		;@ Same as m6502ptr
 	addy		.req r12		;@ Keep this at r12 (scratch for APCS)
 
 	.struct m6502Size			;@ Changes section so make sure it is set before real code.
