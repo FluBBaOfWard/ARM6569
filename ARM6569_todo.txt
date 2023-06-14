@@ -1,4 +1,4 @@
 ARM6569 To do
 --------------
 
-	Fix sprites to how they were.
+	Fix Sprite to Sprite collision.

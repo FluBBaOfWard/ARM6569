@@ -15,108 +15,108 @@ extern "C" {
 
 typedef struct {
 	/// 0x00 Sprite 0 X Position
-	u8 vicSpr0X;
+	u8 spr0X;
 	/// 0x01 Sprite 0 Y Position
-	u8 vicSpr0Y;
+	u8 spr0Y;
 	/// 0x02 Sprite 1 X Position
-	u8 vicSpr1X;
+	u8 spr1X;
 	/// 0x03 Sprite 1 Y Position
-	u8 vicSpr1Y;
+	u8 spr1Y;
 	/// 0x04 Sprite 2 X Position
-	u8 vicSpr2X;
+	u8 spr2X;
 	/// 0x05 Sprite 2 Y Position
-	u8 vicSpr2Y;
+	u8 spr2Y;
 	/// 0x06 Sprite 3 X Position
-	u8 vicSpr3X;
+	u8 spr3X;
 	/// 0x07 Sprite 3 Y Position
-	u8 vicSpr3Y;
+	u8 spr3Y;
 	/// 0x08 Sprite 4 X Position
-	u8 vicSpr4X;
+	u8 spr4X;
 	/// 0x09 Sprite 4 Y Position
-	u8 vicSpr4Y;
+	u8 spr4Y;
 	/// 0x0A Sprite 5 X Position
-	u8 vicSpr5X;
+	u8 spr5X;
 	/// 0x0B Sprite 5 Y Position
-	u8 vicSpr5Y;
+	u8 spr5Y;
 	/// 0x0C Sprite 6 X Position
-	u8 vicSpr6X;
+	u8 spr6X;
 	/// 0x0D Sprite 6 Y Position
-	u8 vicSpr6Y;
+	u8 spr6Y;
 	/// 0x0E Sprite 7 X Position
-	u8 vicSpr7X;
+	u8 spr7X;
 	/// 0x0F Sprite 7 Y Position
-	u8 vicSpr7Y;
+	u8 spr7Y;
 	/// 0x10 Sprites X Pos MSB
-	u8 vicSprXPos;
+	u8 sprXPos;
 	/// 0x11
-	u8 vicCtrl1;
+	u8 ctrl1;
 	/// 0x12
-	u8 vicRaster;
+	u8 raster;
 	/// 0x13
-	u8 vicLightPenX;
+	u8 lightPenX;
 	/// 0x14
-	u8 vicLightPenY;
+	u8 lightPenY;
 	/// 0x15
-	u8 vicSprEnable;
+	u8 sprEnable;
 	/// 0x16
-	u8 vicCtrl2;
-	/// 0x17
-	u8 vicSprExpY;
+	u8 ctrl2;
+	/// 0x17 Sprite Expand Y
+	u8 sprExpY;
 	/// 0x18
-	u8 vicMemCtrl;
+	u8 memCtrl;
 	/// 0x19
-	u8 vicIrqFlag;
+	u8 irqFlag;
 	/// 0x1A
-	u8 vicIrqEnable;
+	u8 irqEnable;
 	/// 0x1B
-	u8 vicSprPrio;
+	u8 sprPrio;
 	/// 0x1C
-	u8 vicSprMode;
-	/// 0x1D
-	u8 vicSprExpX;
-	/// 0x1E
-	u8 vicSprSprCol;
-	/// 0x1F
-	u8 vicSprBgrCol;
+	u8 sprMode;
+	/// 0x1D Sprite Expand X
+	u8 sprExpX;
+	/// 0x1E  Sprite to Sprite Collision
+	u8 sprSprCol;
+	/// 0x1F  Sprite to Background Collision
+	u8 sprBgrCol;
 	/// 0x20
-	u8 vicBrdCol;
+	u8 brdCol;
 	/// 0x21
-	u8 vicBgr0Col;
+	u8 bgr0Col;
 	/// 0x22
-	u8 vicBgr1Col;
+	u8 bgr1Col;
 	/// 0x23
-	u8 vicBgr2Col;
+	u8 bgr2Col;
 	/// 0x24
-	u8 vicBgr3Col;
+	u8 bgr3Col;
 	/// 0x25
-	u8 vicSprM0Col;
+	u8 sprM0Col;
 	/// 0x26
-	u8 vicSprM1Col;
+	u8 sprM1Col;
 	/// 0x27
-	u8 vicSpr0Col;
+	u8 spr0Col;
 	/// 0x28
-	u8 vicSpr1Col;
+	u8 spr1Col;
 	/// 0x29
-	u8 vicSpr2Col;
+	u8 spr2Col;
 	/// 0x2A
-	u8 vicSpr3Col;
+	u8 spr3Col;
 	/// 0x2B
-	u8 vicSpr4Col;
+	u8 spr4Col;
 	/// 0x2C
-	u8 vicSpr5Col;
+	u8 spr5Col;
 	/// 0x2D
-	u8 vicSpr6Col;
+	u8 spr6Col;
 	// 0x2E
-	u8 vicSpr7Col;
+	u8 spr7Col;
 	/// 0x2F
-	u8 vicEmpty0;
+	u8 empty0;
 
 	/// Current scanline
 	u32 scanline;
 	u32 lastscanline;
 	u32 scrollXLine;
-	u8 vicTVSystem;
-	u8 vicPadding[3];
+	u8 tvSystem;
+	u8 padding[3];
 	/// The function to call when IRQ happens
 	u32 *irqFunc;
 } M6569;

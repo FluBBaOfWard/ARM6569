@@ -16,6 +16,7 @@
 	.global VIC_W
 	.global m6569Read
 	.global m6569Write
+	.global m6569DoScanline
 	.global VIC_ctrl2_W
 
 	.syntax unified
@@ -29,26 +30,27 @@
 	.align 2
 
 ;@----------------------------------------------------------------------------
-m6569Init:					;@ r0 = VICII chip.
+m6569Init:					;@ r10 = VICII chip.
 ;@----------------------------------------------------------------------------
 	adr r1,dummyFunc
-//	str r1,[r0,#ciaIrqFunc]
+	str r1,[vic2ptr,#vicIrqFunc]
 ;@----------------------------------------------------------------------------
-m6569Reset:					;@ r0 = VICII chip.
+m6569Reset:					;@ r10 = VICII chip.
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{lr}
 
+	add r0,vic2ptr,#m6569StateStart
 	mov r1,#0
 	mov r2,#m6569StateSize/4	;@ 36/4=9
 	bl memset_					;@ Clear variables
 
 	mov r1,#0x01				;@ TimerA enabled?
-//	strb r1,[r0,#ciaIrqCtrl]
-//	strb r1,[r0,#ciaTodRunning]	;@ Running?
+//	strb r1,[vic2ptr,#ciaIrqCtrl]
+//	strb r1,[vic2ptr,#ciaTodRunning]	;@ Running?
 
 	mov r1,#-1
-//	str r1,[r0,#ciaTimerACount]
-//	str r1,[r0,#ciaTimerBCount]
+//	str r1,[vic2ptr,#ciaTimerACount]
+//	str r1,[vic2ptr,#ciaTimerBCount]
 
 	ldmfd sp!,{lr}
 	bx lr
@@ -93,6 +95,32 @@ m6569GetStateSize:	;@ Out r0=state size.
 	mov r0,#m6569StateSize
 	bx lr
 
+;@----------------------------------------------------------------------------
+m6569DoScanline:
+;@----------------------------------------------------------------------------
+	ldr r1,[vic2ptr,#scanline]
+	stmfd sp!,{lr}
+	bl RenderLine
+	ldmfd sp!,{lr}
+
+VICRasterCheck:
+	ldrb r0,[vic2ptr,#vicRaster]
+	ldrb r1,[vic2ptr,#vicCtrl1]
+	tst r1,#0x80
+	orrne r0,r0,#0x100
+	ldr r1,[vic2ptr,#scanline]
+	cmp r0,r1
+	bne noRasterIrq
+	ldrb r0,[vic2ptr,#vicIrqFlag]
+	orr r0,r0,#1
+	strb r0,[vic2ptr,#vicIrqFlag]
+
+	ldrb r1,[vic2ptr,#vicIrqEnable]
+	ands r0,r0,r1
+	ldrne pc,[vic2ptr,#vicIrqFunc]
+noRasterIrq:
+
+	bx lr
 ;@----------------------------------------------------------------------------
 m6569Read:					;@ r2 = VICII chip, r12 = adr.
 ;@----------------------------------------------------------------------------
@@ -189,7 +217,8 @@ VIC_irqflag_R:		;@ 0xD019
 ;@----------------------------------------------------------------------------
 //	mov r11,r11
 	ldrb r0,[vic2ptr,#vicIrqFlag]
-	ands r0,r0,#0x0F
+	ldrb r1,[vic2ptr,#vicIrqEnable]
+	ands r0,r0,r1
 	orrne r0,r0,#0x80
 	orr r0,r0,#0x70
 	bx lr
@@ -251,7 +280,7 @@ VIC_W:
 	.long VIC_default_W		;@ 0xD017
 	.long VIC_memctrl_W		;@ 0xD018
 	.long VIC_irqflag_W		;@ 0xD019
-	.long VIC_default_W		;@ 0xD01A
+	.long VIC_irqenable_W	;@ 0xD01A
 	.long VIC_default_W		;@ 0xD01B
 	.long VIC_default_W		;@ 0xD01C
 	.long VIC_default_W		;@ 0xD01D
@@ -328,6 +357,18 @@ VIC_irqflag_W:		;@ 0xD019
 	ldrb r1,[vic2ptr,#vicIrqFlag]
 	bic r1,r1,r0
 	strb r1,[vic2ptr,#vicIrqFlag]
+	ldrb r0,[vic2ptr,#vicIrqEnable]
+	ands r0,r1,r0
+	ldreq pc,[vic2ptr,#vicIrqFunc]
+	bx lr
+;@----------------------------------------------------------------------------
+VIC_irqenable_W:	;@ 0xD01A
+;@----------------------------------------------------------------------------
+	and r0,r0,#0xF
+	strb r0,[vic2ptr,#vicIrqEnable]
+	ldrb r1,[vic2ptr,#vicIrqFlag]
+	ands r0,r1,r0
+	ldr pc,[vic2ptr,#vicIrqFunc]
 	bx lr
 
 

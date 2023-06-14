@@ -39,15 +39,15 @@ vicLightPenX:	.byte 0			;@ 0x13
 vicLightPenY:	.byte 0			;@ 0x14
 vicSprEnable:	.byte 0			;@ 0x15
 vicCtrl2:		.byte 0			;@ 0x16
-vicSprExpY:		.byte 0			;@ 0x17
+vicSprExpY:		.byte 0			;@ 0x17 Sprite Expand Y
 vicMemCtrl:		.byte 0			;@ 0x18
 vicIrqFlag:		.byte 0			;@ 0x19
 vicIrqEnable:	.byte 0			;@ 0x1A
 vicSprPrio:		.byte 0			;@ 0x1B
 vicSprMode:		.byte 0			;@ 0x1C
-vicSprExpX:		.byte 0			;@ 0x1D
-vicSprSprCol:	.byte 0			;@ 0x1E
-vicSprBgrCol:	.byte 0			;@ 0x1F
+vicSprExpX:		.byte 0			;@ 0x1D Sprite Expand X
+vicSprSprCol:	.byte 0			;@ 0x1E Sprite to Sprite Collision
+vicSprBgrCol:	.byte 0			;@ 0x1F Sprite to Background Collision
 vicBrdCol:		.byte 0			;@ 0x20
 vicBgr0Col:		.byte 0			;@ 0x21
 vicBgr1Col:		.byte 0			;@ 0x22
@@ -71,6 +71,7 @@ scrollXLine:	.long 0			;@
 vicTVSystem:	.byte 0			;@
 vicPadding:		.skip 3			;@
 m6569StateEnd:
+vicIrqFunc:		.long 0
 m6569End:
 
 m6569Size = m6569End - m6569Start
