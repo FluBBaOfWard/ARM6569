@@ -17,6 +17,9 @@
 	.global m6569Read
 	.global m6569Write
 	.global m6569DoScanline
+	.global m6569SaveState
+	.global m6569LoadState
+	.global m6569GetStateSize
 	.global VIC_ctrl2_W
 
 	.syntax unified
