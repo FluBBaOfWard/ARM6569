@@ -98,28 +98,32 @@ m6569GetStateSize:	;@ Out r0=state size.
 ;@----------------------------------------------------------------------------
 m6569DoScanline:
 ;@----------------------------------------------------------------------------
-	ldr r1,[vic2ptr,#scanline]
 	stmfd sp!,{lr}
+	ldr r1,[vic2ptr,#scanline]
 	bl RenderLine
-	ldmfd sp!,{lr}
 
 VICRasterCheck:
 	ldrb r0,[vic2ptr,#vicRaster]
-	ldrb r1,[vic2ptr,#vicCtrl1]
-	tst r1,#0x80
+	ldrb r2,[vic2ptr,#vicCtrl1]
+	tst r2,#0x80
 	orrne r0,r0,#0x100
-	ldr r1,[vic2ptr,#scanline]
 	cmp r0,r1
 	bne noRasterIrq
 	ldrb r0,[vic2ptr,#vicIrqFlag]
 	orr r0,r0,#1
 	strb r0,[vic2ptr,#vicIrqFlag]
 
-	ldrb r1,[vic2ptr,#vicIrqEnable]
-	ands r0,r0,r1
+	ldrb r2,[vic2ptr,#vicIrqEnable]
+	ands r0,r0,r2
+	movne lr,pc
 	ldrne pc,[vic2ptr,#vicIrqFunc]
 noRasterIrq:
 
+	add r1,r1,#1
+	str r1,[vic2ptr,#scanline]
+	ldr r0,[vic2ptr,#lastscanline]
+	sub r0,r0,r1
+	ldmfd sp!,{lr}
 	bx lr
 ;@----------------------------------------------------------------------------
 m6569Read:					;@ r2 = VICII chip, r12 = adr.
@@ -215,7 +219,6 @@ VIC_memctrl_R:		;@ 0xD018
 ;@----------------------------------------------------------------------------
 VIC_irqflag_R:		;@ 0xD019
 ;@----------------------------------------------------------------------------
-//	mov r11,r11
 	ldrb r0,[vic2ptr,#vicIrqFlag]
 	ldrb r1,[vic2ptr,#vicIrqEnable]
 	ands r0,r0,r1
@@ -353,7 +356,6 @@ VIC_memctrl_W:		;@ 0xD018
 ;@----------------------------------------------------------------------------
 VIC_irqflag_W:		;@ 0xD019
 ;@----------------------------------------------------------------------------
-//	mov r11,r11
 	ldrb r1,[vic2ptr,#vicIrqFlag]
 	bic r1,r1,r0
 	strb r1,[vic2ptr,#vicIrqFlag]
@@ -369,8 +371,6 @@ VIC_irqenable_W:	;@ 0xD01A
 	ldrb r1,[vic2ptr,#vicIrqFlag]
 	ands r0,r1,r0
 	ldr pc,[vic2ptr,#vicIrqFunc]
-	bx lr
-
 
 ;@----------------------------------------------------------------------------
 
