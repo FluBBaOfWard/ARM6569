@@ -69,8 +69,12 @@ scanline:		.long 0			;@ Current scanline
 lastscanline:	.long 0			;@
 scrollXLine:	.long 0			;@
 vicTVSystem:	.byte 0			;@
-vicPadding:		.skip 3			;@
+vicMemoryBank:	.byte 0			;@ Which of the four 16k memory banks that is currently mapped in.
+vicPadding:		.skip 2			;@
 m6569StateEnd:
+vicMapBase:		.long 0
+vicChrBase:		.long 0
+vicBmpBase:		.long 0
 vicIrqFunc:		.long 0
 m6569End:
 

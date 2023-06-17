@@ -20,6 +20,7 @@
 	.global m6569SaveState
 	.global m6569LoadState
 	.global m6569GetStateSize
+	.global m6569SetMemBank
 	.global VIC_ctrl2_W
 
 	.syntax unified
@@ -375,6 +376,42 @@ VIC_irqenable_W:	;@ 0xD01A
 	ands r0,r1,r0
 	ldr pc,[vic2ptr,#vicIrqFunc]
 
+;@----------------------------------------------------------------------------
+m6569SetMemBank:			;@ Set memory bank
+;@----------------------------------------------------------------------------
+	eor r0,r0,#0x03
+	and r0,r0,#0x03
+	strb r0,[vic2ptr,#vicMemoryBank]
+;@----------------------------------------------------------------------------
+SetC64GfxBases:
+;@----------------------------------------------------------------------------
+	stmfd sp!,{r0,r12}
+	ldrb r0,[vic2ptr,#vicMemoryBank]
+	ldrb r2,[vic2ptr,#vicMemCtrl]	;@ 0xD018
+	and r1,r2,#0xF0
+	orr r1,r1,r0,lsl#8
+	add r1,m6502zpage,r1,lsl#6
+
+	str r1,[vic2ptr,#vicMapBase]
+
+	and r1,r2,#0x0E
+	orr r0,r1,r0,lsl#4
+
+	and r1,r0,#0x1C
+	cmp r1,#0x04				;@ 0x1000/0x9000
+	ldreq r2,=Chargen			;@ r2 = CHRROM
+	movne r2,m6502zpage			;@ r2 = RAM
+
+	bic r1,r0,#0x07
+	add r1,r2,r1,lsl#10
+	str r1,[vic2ptr,#vicBmpBase]
+
+	andeq r0,r0,#0x02
+	add r1,r2,r0,lsl#10
+	str r1,[vic2ptr,#vicChrBase]
+
+	ldmfd sp!,{r0,r12}
+	bx lr
 ;@----------------------------------------------------------------------------
 
 	.end

@@ -116,7 +116,12 @@ typedef struct {
 	u32 lastscanline;
 	u32 scrollXLine;
 	u8 tvSystem;
-	u8 padding[3];
+	/// Which of the four 16k memory banks that is currently mapped in.
+	u8 memoryBank;
+	u8 padding[2];
+	u8 *mapBase;
+	u8 *chrBase;
+	u8 *bmpBase;
 	/// The function to call when IRQ happens
 	u32 *irqFunc;
 } M6569;
