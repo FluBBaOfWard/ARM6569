@@ -21,7 +21,7 @@
 	.global m6569LoadState
 	.global m6569GetStateSize
 	.global m6569SetMemBank
-	.global VIC_ctrl2_W
+	.global vicCtrl2W
 
 	.syntax unified
 	.arm
@@ -139,63 +139,63 @@ VIC_R:
 	cmp r1,#0x2F
 	ldrmi pc,[pc,r1,lsl#2]
 ;@---------------------------
-	b VIC_empty_R
-;@ VIC_read_tbl
-	.long VIC_default_R		;@ 0xD000
-	.long VIC_default_R		;@ 0xD001
-	.long VIC_default_R		;@ 0xD002
-	.long VIC_default_R		;@ 0xD003
-	.long VIC_default_R		;@ 0xD004
-	.long VIC_default_R		;@ 0xD005
-	.long VIC_default_R		;@ 0xD006
-	.long VIC_default_R		;@ 0xD007
-	.long VIC_default_R		;@ 0xD008
-	.long VIC_default_R		;@ 0xD009
-	.long VIC_default_R		;@ 0xD00A
-	.long VIC_default_R		;@ 0xD00B
-	.long VIC_default_R		;@ 0xD00C
-	.long VIC_default_R		;@ 0xD00D
-	.long VIC_default_R		;@ 0xD00E
-	.long VIC_default_R		;@ 0xD00F
-	.long VIC_default_R		;@ 0xD010
-	.long VIC_ctrl1_R		;@ 0xD011
-	.long VIC_scanline_R	;@ 0xD012
-	.long VIC_default_R		;@ 0xD013
-	.long VIC_default_R		;@ 0xD014
-	.long VIC_default_R		;@ 0xD015
-	.long VIC_ctrl2_R		;@ 0xD016
-	.long VIC_default_R		;@ 0xD017
-	.long VIC_memctrl_R		;@ 0xD018
-	.long VIC_irqflag_R		;@ 0xD019
-	.long VIC_irqenable_R	;@ 0xD01A
-	.long VIC_default_R		;@ 0xD01B
-	.long VIC_default_R		;@ 0xD01C
-	.long VIC_default_R		;@ 0xD01D
-	.long VIC_default_R		;@ 0xD01E
-	.long VIC_default_R		;@ 0xD01F
-	.long VIC_palette_R		;@ 0xD020
-	.long VIC_palette_R		;@ 0xD021
-	.long VIC_palette_R		;@ 0xD022
-	.long VIC_palette_R		;@ 0xD023
-	.long VIC_palette_R		;@ 0xD024
-	.long VIC_palette_R		;@ 0xD025
-	.long VIC_palette_R		;@ 0xD026
-	.long VIC_palette_R		;@ 0xD027
-	.long VIC_palette_R		;@ 0xD028
-	.long VIC_palette_R		;@ 0xD029
-	.long VIC_palette_R		;@ 0xD02A
-	.long VIC_palette_R		;@ 0xD02B
-	.long VIC_palette_R		;@ 0xD02C
-	.long VIC_palette_R		;@ 0xD02D
-	.long VIC_palette_R		;@ 0xD02E
+	b vicEmptyR
+;@ vicReadTable
+	.long vicDefaultR		;@ 0xD000
+	.long vicDefaultR		;@ 0xD001
+	.long vicDefaultR		;@ 0xD002
+	.long vicDefaultR		;@ 0xD003
+	.long vicDefaultR		;@ 0xD004
+	.long vicDefaultR		;@ 0xD005
+	.long vicDefaultR		;@ 0xD006
+	.long vicDefaultR		;@ 0xD007
+	.long vicDefaultR		;@ 0xD008
+	.long vicDefaultR		;@ 0xD009
+	.long vicDefaultR		;@ 0xD00A
+	.long vicDefaultR		;@ 0xD00B
+	.long vicDefaultR		;@ 0xD00C
+	.long vicDefaultR		;@ 0xD00D
+	.long vicDefaultR		;@ 0xD00E
+	.long vicDefaultR		;@ 0xD00F
+	.long vicDefaultR		;@ 0xD010
+	.long vicCtrl1R			;@ 0xD011
+	.long vicScanlineR		;@ 0xD012
+	.long vicDefaultR		;@ 0xD013
+	.long vicDefaultR		;@ 0xD014
+	.long vicDefaultR		;@ 0xD015
+	.long vicCtrl2R			;@ 0xD016
+	.long vicDefaultR		;@ 0xD017
+	.long vicMemCtrlR		;@ 0xD018
+	.long vicIrqFlagR		;@ 0xD019
+	.long vicIrqEnableR		;@ 0xD01A
+	.long vicDefaultR		;@ 0xD01B
+	.long vicDefaultR		;@ 0xD01C
+	.long vicDefaultR		;@ 0xD01D
+	.long vicDefaultR		;@ 0xD01E
+	.long vicDefaultR		;@ 0xD01F
+	.long vicPaletteR		;@ 0xD020
+	.long vicPaletteR		;@ 0xD021
+	.long vicPaletteR		;@ 0xD022
+	.long vicPaletteR		;@ 0xD023
+	.long vicPaletteR		;@ 0xD024
+	.long vicPaletteR		;@ 0xD025
+	.long vicPaletteR		;@ 0xD026
+	.long vicPaletteR		;@ 0xD027
+	.long vicPaletteR		;@ 0xD028
+	.long vicPaletteR		;@ 0xD029
+	.long vicPaletteR		;@ 0xD02A
+	.long vicPaletteR		;@ 0xD02B
+	.long vicPaletteR		;@ 0xD02C
+	.long vicPaletteR		;@ 0xD02D
+	.long vicPaletteR		;@ 0xD02E
 
-VIC_default_R:
+vicDefaultR:
 	add r2,vic2ptr,#m6569Registers
 	ldrb r0,[r2,r1]
 	bx lr
 
 ;@----------------------------------------------------------------------------
-VIC_ctrl1_R:		;@ 0xD011
+vicCtrl1R:			;@ 0xD011
 ;@----------------------------------------------------------------------------
 	ldr r1,[vic2ptr,#scanline]
 	and r1,r1,#0x100
@@ -204,24 +204,24 @@ VIC_ctrl1_R:		;@ 0xD011
 	orr r0,r0,r1,lsr#1
 	bx lr
 ;@----------------------------------------------------------------------------
-VIC_scanline_R:		;@ 0xD012
+vicScanlineR:		;@ 0xD012
 ;@----------------------------------------------------------------------------
 	ldrb r0,[vic2ptr,#scanline]
 	bx lr
 ;@----------------------------------------------------------------------------
-VIC_ctrl2_R:		;@ 0xD016
+vicCtrl2R:			;@ 0xD016
 ;@----------------------------------------------------------------------------
 	ldrb r0,[vic2ptr,#vicCtrl2]
 	orr r0,r0,#0xC0
 	bx lr
 ;@----------------------------------------------------------------------------
-VIC_memctrl_R:		;@ 0xD018
+vicMemCtrlR:		;@ 0xD018
 ;@----------------------------------------------------------------------------
 	ldrb r0,[vic2ptr,#vicMemCtrl]
 	orr r0,r0,#0x01
 	bx lr
 ;@----------------------------------------------------------------------------
-VIC_irqflag_R:		;@ 0xD019
+vicIrqFlagR:		;@ 0xD019
 ;@----------------------------------------------------------------------------
 	ldrb r0,[vic2ptr,#vicIrqFlag]
 	ldrb r1,[vic2ptr,#vicIrqEnable]
@@ -230,20 +230,20 @@ VIC_irqflag_R:		;@ 0xD019
 	orr r0,r0,#0x70
 	bx lr
 ;@----------------------------------------------------------------------------
-VIC_irqenable_R:	;@ 0xD01A
+vicIrqEnableR:		;@ 0xD01A
 ;@----------------------------------------------------------------------------
 	ldrb r0,[vic2ptr,#vicIrqEnable]
 	orr r0,r0,#0xF0
 	bx lr
 ;@----------------------------------------------------------------------------
-VIC_palette_R:		;@ 0xD020 -> 0xD02E
+vicPaletteR:		;@ 0xD020 -> 0xD02E
 ;@----------------------------------------------------------------------------
 	add r2,vic2ptr,#m6569Registers
 	ldrb r0,[r2,r1]
 	orr r0,r0,#0xF0
 	bx lr
 ;@----------------------------------------------------------------------------
-VIC_empty_R:		;@ 0xD02F -> 0xD03F
+vicEmptyR:			;@ 0xD02F -> 0xD03F
 ;@----------------------------------------------------------------------------
 	mov r11,r11
 	mov r0,#0xFF
@@ -260,69 +260,68 @@ VIC_W:
 	ldrmi pc,[pc,r1,lsl#2]
 ;@---------------------------
 	bx lr
-//VIC_write_tbl
-	.long VIC_default_W		;@ 0xD000
-	.long VIC_default_W		;@ 0xD001
-	.long VIC_default_W		;@ 0xD002
-	.long VIC_default_W		;@ 0xD003
-	.long VIC_default_W		;@ 0xD004
-	.long VIC_default_W		;@ 0xD005
-	.long VIC_default_W		;@ 0xD006
-	.long VIC_default_W		;@ 0xD007
-	.long VIC_default_W		;@ 0xD008
-	.long VIC_default_W		;@ 0xD009
-	.long VIC_default_W		;@ 0xD00A
-	.long VIC_default_W		;@ 0xD00B
-	.long VIC_default_W		;@ 0xD00C
-	.long VIC_default_W		;@ 0xD00D
-	.long VIC_default_W		;@ 0xD00E
-	.long VIC_default_W		;@ 0xD00F
-	.long VIC_default_W		;@ 0xD010
-	.long VIC_ctrl1_W		;@ 0xD011
-	.long VIC_default_W		;@ 0xD012
-	.long VIC_default_W		;@ 0xD013
-	.long VIC_default_W		;@ 0xD014
-	.long VIC_default_W		;@ 0xD015
-	.long VIC_ctrl2_W		;@ 0xD016
-	.long VIC_default_W		;@ 0xD017
-	.long VIC_memctrl_W		;@ 0xD018
-	.long VIC_irqflag_W		;@ 0xD019
-	.long VIC_irqenable_W	;@ 0xD01A
-	.long VIC_default_W		;@ 0xD01B
-	.long VIC_default_W		;@ 0xD01C
-	.long VIC_default_W		;@ 0xD01D
-	.long VIC_default_W		;@ 0xD01E
-	.long VIC_default_W		;@ 0xD01F
-	.long VIC_default_W		;@ 0xD020
-	.long VIC_default_W		;@ 0xD021
-	.long VIC_default_W		;@ 0xD022
-	.long VIC_default_W		;@ 0xD023
-	.long VIC_default_W		;@ 0xD024
-	.long VIC_default_W		;@ 0xD025
-	.long VIC_default_W		;@ 0xD026
-	.long VIC_default_W		;@ 0xD027
-	.long VIC_default_W		;@ 0xD028
-	.long VIC_default_W		;@ 0xD029
-	.long VIC_default_W		;@ 0xD02A
-	.long VIC_default_W		;@ 0xD02B
-	.long VIC_default_W		;@ 0xD02C
-	.long VIC_default_W		;@ 0xD02D
-	.long VIC_default_W		;@ 0xD02E
+;@ vicWriteTable
+	.long vicDefaultW		;@ 0xD000
+	.long vicDefaultW		;@ 0xD001
+	.long vicDefaultW		;@ 0xD002
+	.long vicDefaultW		;@ 0xD003
+	.long vicDefaultW		;@ 0xD004
+	.long vicDefaultW		;@ 0xD005
+	.long vicDefaultW		;@ 0xD006
+	.long vicDefaultW		;@ 0xD007
+	.long vicDefaultW		;@ 0xD008
+	.long vicDefaultW		;@ 0xD009
+	.long vicDefaultW		;@ 0xD00A
+	.long vicDefaultW		;@ 0xD00B
+	.long vicDefaultW		;@ 0xD00C
+	.long vicDefaultW		;@ 0xD00D
+	.long vicDefaultW		;@ 0xD00E
+	.long vicDefaultW		;@ 0xD00F
+	.long vicDefaultW		;@ 0xD010
+	.long vicCtrl1W			;@ 0xD011
+	.long vicDefaultW		;@ 0xD012
+	.long vicDefaultW		;@ 0xD013
+	.long vicDefaultW		;@ 0xD014
+	.long vicDefaultW		;@ 0xD015
+	.long vicCtrl2W			;@ 0xD016
+	.long vicDefaultW		;@ 0xD017
+	.long vicMemCtrlW		;@ 0xD018
+	.long vicIrqFlagW		;@ 0xD019
+	.long vicIrqEnableW		;@ 0xD01A
+	.long vicDefaultW		;@ 0xD01B
+	.long vicDefaultW		;@ 0xD01C
+	.long vicDefaultW		;@ 0xD01D
+	.long vicDefaultW		;@ 0xD01E
+	.long vicDefaultW		;@ 0xD01F
+	.long vicDefaultW		;@ 0xD020
+	.long vicDefaultW		;@ 0xD021
+	.long vicDefaultW		;@ 0xD022
+	.long vicDefaultW		;@ 0xD023
+	.long vicDefaultW		;@ 0xD024
+	.long vicDefaultW		;@ 0xD025
+	.long vicDefaultW		;@ 0xD026
+	.long vicDefaultW		;@ 0xD027
+	.long vicDefaultW		;@ 0xD028
+	.long vicDefaultW		;@ 0xD029
+	.long vicDefaultW		;@ 0xD02A
+	.long vicDefaultW		;@ 0xD02B
+	.long vicDefaultW		;@ 0xD02C
+	.long vicDefaultW		;@ 0xD02D
+	.long vicDefaultW		;@ 0xD02E
 
-
-VIC_default_W:
+vicDefaultW:
 //	mov r11,r11
 	add r2,vic2ptr,#m6569Registers
 	strb r0,[r2,r1]
 	bx lr
 
 ;@----------------------------------------------------------------------------
-VIC_ctrl1_W:		;@ 0xD011
+vicCtrl1W:			;@ 0xD011
 ;@----------------------------------------------------------------------------
 	strb r0,[vic2ptr,#vicCtrl1]
 	b SetC64GfxMode
 ;@----------------------------------------------------------------------------
-VIC_ctrl2_W:		;@ 0xD016
+vicCtrl2W:			;@ 0xD016
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r0,r12}
 	ldrb r1,[vic2ptr,#vicCtrl2]
@@ -353,12 +352,12 @@ exit_sx:
 //	bx lr
 
 ;@----------------------------------------------------------------------------
-VIC_memctrl_W:		;@ 0xD018
+vicMemCtrlW:		;@ 0xD018
 ;@----------------------------------------------------------------------------
 	strb r0,[vic2ptr,#vicMemCtrl]
-	b SetC64GfxBases
+	b setGfxBases
 ;@----------------------------------------------------------------------------
-VIC_irqflag_W:		;@ 0xD019
+vicIrqFlagW:		;@ 0xD019
 ;@----------------------------------------------------------------------------
 	ldrb r1,[vic2ptr,#vicIrqFlag]
 	bic r1,r1,r0
@@ -368,7 +367,7 @@ VIC_irqflag_W:		;@ 0xD019
 	ldreq pc,[vic2ptr,#vicIrqFunc]
 	bx lr
 ;@----------------------------------------------------------------------------
-VIC_irqenable_W:	;@ 0xD01A
+vicIrqEnableW:		;@ 0xD01A
 ;@----------------------------------------------------------------------------
 	and r0,r0,#0xF
 	strb r0,[vic2ptr,#vicIrqEnable]
@@ -383,7 +382,7 @@ m6569SetMemBank:			;@ Set memory bank
 	and r0,r0,#0x03
 	strb r0,[vic2ptr,#vicMemoryBank]
 ;@----------------------------------------------------------------------------
-SetC64GfxBases:
+setGfxBases:
 ;@----------------------------------------------------------------------------
 	stmfd sp!,{r0,r12}
 	ldrb r0,[vic2ptr,#vicMemoryBank]
