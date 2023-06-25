@@ -13,6 +13,21 @@
 extern "C" {
 #endif
 
+//--------------------------- VIC II types -----------------------------------
+/// Should not be used.
+#define VICAUTO			(0x00)
+/// VIC II Early NTSC
+#define VIC6567			(0x01)
+/// VIC II Early PAL
+#define VIC6569			(0x02)
+/// VIC II Later NTSC
+#define VDP8562			(0x05)
+/// VIC II Later PAL
+#define VDP8565			(0x06)
+
+/// PAL timing =)
+#define PAL_TIMING		(2)
+
 typedef struct {
 	/// 0x00 Sprite 0 X Position
 	u8 spr0X;

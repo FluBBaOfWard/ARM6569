@@ -7,7 +7,17 @@
 //
 ;@ ASM header for the MOS 6569 emulator
 
-#include "../ARM6502/M6502.i"
+#include "../ARM6502/M6502.i"		// Only needed to get 6502 size
+
+//--------------------------- VIC II types -----------------------------------
+#define VICAUTO			(0x00)		// Should not be used.
+#define VIC6567			(0x01)		// VIC II NTSC
+#define VIC6569			(0x02)		// VIC II PAL
+#define VIC8562			(0x05)		// VIC II NTSC
+#define VIC8565			(0x06)		// VIC II PAL
+
+#define PAL_TIMING		(2)			// PAL timing =)
+
 				;@ r0,r1,r2=temp regs
 	vic2ptr		.req r10		;@ Same as m6502ptr
 	addy		.req r12		;@ Keep this at r12 (scratch for APCS)
